@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { transformLinkImplicit } from "../transforms/link-implicit.js";
+import { transformLinkImplicit } from "../transforms/link-implicit";
 
 describe("transformLinkImplicit", () => {
   it("should add implicit prop to BpkLink", () => {

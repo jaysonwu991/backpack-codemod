@@ -79,6 +79,9 @@ function MyComponent() {
 }
 ```
 
+**Examples:** `examples/bpk-button-v2/before.tsx` → `examples/bpk-button-v2/after.tsx`
+**Demo:** `examples/bpk-button-v2/demo.tsx`
+
 ---
 
 ### `scss-use-migration`
@@ -114,6 +117,9 @@ Migrates SCSS from `@import` to `@use` syntax (Backpack v39.0.0).
   @include bpk-mixins.bpk-margin(16px);
 }
 ```
+
+**Examples:** `examples/scss-use-migration/before.scss` → `examples/scss-use-migration/after.scss`
+**Demo:** `examples/scss-use-migration/demo.scss`
 
 ---
 
@@ -157,6 +163,9 @@ function MyComponent() {
 }
 ```
 
+**Examples:** `examples/bottom-sheet-padding/before.tsx` → `examples/bottom-sheet-padding/after.tsx`
+**Demo:** `examples/bottom-sheet-padding/demo.tsx`
+
 **Note:** If you want to adopt the new 24px padding, use `paddingType="default"` or remove the transform.
 
 ---
@@ -171,18 +180,26 @@ Migrates `BpkPriceMarkerV2` to `BpkPriceMarker`.
 
 - Renames `BpkPriceMarkerV2` to `BpkPriceMarker`
 - Updates imports from `bpk-component-price-marker-v2` to `bpk-component-price-marker`
+- Updates component usage in JSX
 
 **Before:**
 
 ```tsx
 import { BpkPriceMarkerV2 } from '@skyscanner/backpack-web/bpk-component-price-marker-v2';
+
+<BpkPriceMarkerV2 price="$120" leadingTitle="NYC to LON" />
 ```
 
 **After:**
 
 ```tsx
 import { BpkPriceMarker } from '@skyscanner/backpack-web/bpk-component-price-marker';
+
+<BpkPriceMarker price="$120" leadingTitle="NYC to LON" />
 ```
+
+**Examples:** `examples/price-marker-v2/before.tsx` → `examples/price-marker-v2/after.tsx`
+**Demo:** `examples/price-marker-v2/demo.tsx`
 
 ---
 
@@ -209,6 +226,9 @@ Adds the `implicit` prop to `BpkLink` to maintain the pre-v37 visual style.
 <BpkLink href="/path" implicit>Link</BpkLink>
 ```
 
+**Examples:** `examples/link-implicit/before.tsx` → `examples/link-implicit/after.tsx`
+**Demo:** `examples/link-implicit/demo.tsx`
+
 ---
 
 ### `badge-v2`
@@ -220,6 +240,26 @@ Migrates `BpkBadgeV2` to `BpkBadge`.
 **What it does:**
 
 - Renames `BpkBadgeV2` to `BpkBadge` in code and JSX
+- Updates component usage in JSX
+
+**Before:**
+
+```tsx
+import { BpkBadgeV2 } from '@skyscanner/backpack-web';
+
+<BpkBadgeV2 type="light">Low fare</BpkBadgeV2>
+```
+
+**After:**
+
+```tsx
+import { BpkBadge } from '@skyscanner/backpack-web';
+
+<BpkBadge type="light">Low fare</BpkBadge>
+```
+
+**Examples:** `examples/badge-v2/before.tsx` → `examples/badge-v2/after.tsx`
+**Demo:** `examples/badge-v2/demo.tsx`
 
 ---
 
@@ -234,6 +274,27 @@ Updates renamed badge type constants and props.
 - `BADGE_TYPES.destructive` → `BADGE_TYPES.critical`
 - `BADGE_TYPES.light` → `BADGE_TYPES.normal`
 - Updates `type="destructive"` and `type="light"` string props
+
+**Before:**
+
+```tsx
+import { BADGE_TYPES, BpkBadge } from '@skyscanner/backpack-web';
+
+<BpkBadge type={BADGE_TYPES.destructive}>Disruption</BpkBadge>
+<BpkBadge type="light">Low fare</BpkBadge>
+```
+
+**After:**
+
+```tsx
+import { BADGE_TYPES, BpkBadge } from '@skyscanner/backpack-web';
+
+<BpkBadge type={BADGE_TYPES.critical}>Disruption</BpkBadge>
+<BpkBadge type="normal">Low fare</BpkBadge>
+```
+
+**Examples:** `examples/badge-types/before.tsx` → `examples/badge-types/after.tsx`
+**Demo:** `examples/badge-types/demo.tsx`
 
 ---
 

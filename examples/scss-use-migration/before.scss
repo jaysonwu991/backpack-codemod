@@ -1,0 +1,6 @@
+@import "~@skyscanner/backpack-web/unstable__bpk-mixins";
+
+.my-component {
+  @include bpk-border-radius-sm;
+  @include bpk-margin(16px);
+}

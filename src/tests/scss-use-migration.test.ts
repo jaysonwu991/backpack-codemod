@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { transformScssUse } from "../transforms/scss-use-migration.js";
+import { transformScssUse } from "../transforms/scss-use-migration";
 
 describe("transformScssUse", () => {
   it("should transform @import to @use", () => {

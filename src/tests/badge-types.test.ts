@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { transformBadgeTypes } from "../transforms/badge-types.js";
+import { transformBadgeTypes } from "../transforms/badge-types";
 
 describe("transformBadgeTypes", () => {
   it("should replace BADGE_TYPES.destructive with BADGE_TYPES.critical", () => {

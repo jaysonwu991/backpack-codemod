@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { transformBadgeV2 } from "../transforms/badge-v2.js";
+import { transformBadgeV2 } from "../transforms/badge-v2";
 
 describe("transformBadgeV2", () => {
   it("should replace BpkBadgeV2 import with BpkBadge", () => {

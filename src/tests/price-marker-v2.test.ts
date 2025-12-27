@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { transformPriceMarkerV2 } from "../transforms/price-marker-v2.js";
+import { transformPriceMarkerV2 } from "../transforms/price-marker-v2";
 
 describe("transformPriceMarkerV2", () => {
   it("should replace BpkPriceMarkerV2 import with BpkPriceMarker", () => {

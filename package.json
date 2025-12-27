@@ -14,7 +14,7 @@
   "bin": {
     "backpack-codemod": "./dist/cli.js"
   },
-  "type": "module",
+  "type": "commonjs",
   "main": "./dist/index.js",
   "scripts": {
     "build": "vite build",

@@ -4,7 +4,7 @@ import { transformBottomSheetPadding } from "./transforms/bottom-sheet-padding.j
 import { transformPriceMarkerV2 } from "./transforms/price-marker-v2.js";
 import { transformBadgeV2 } from "./transforms/badge-v2.js";
 import { transformLinkImplicit } from "./transforms/link-implicit.js";
-import { transformBadgeTypes } from "./transforms/badge-types.js";
+import { transformBadgeTypes } from "./transforms/badge-types";
 
 export {
   transformBpkButton,

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { transformBottomSheetPadding } from "../transforms/bottom-sheet-padding.js";
+import { transformBottomSheetPadding } from "../transforms/bottom-sheet-padding";
 
 describe("transformBottomSheetPadding", () => {
   it('should add paddingType="compact" to BpkBottomSheet', () => {

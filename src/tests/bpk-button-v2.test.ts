@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { transformBpkButton } from "../transforms/bpk-button-v2.js";
+import { transformBpkButton } from "../transforms/bpk-button-v2";
 
 describe("transformBpkButton", () => {
   it("should transform BpkButton import to BpkButtonV2", () => {
