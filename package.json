@@ -9,8 +9,8 @@
     "migration",
     "transform"
   ],
-  "license": "MIT",
-  "author": "",
+  "license": "ISC",
+  "author": "Jayson Wu <jaysonwu991@outlook.com>",
   "bin": {
     "backpack-codemod": "./dist/cli.js"
   },

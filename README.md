@@ -22,7 +22,7 @@ node dist/cli.js --transform bpk-button-v2 --path ./src
 
 - 🚀 Fast AST-based transformations using SWC
 - 🔍 Automatic detection and transformation of deprecated APIs
-- 🧪 Well-tested with comprehensive test coverage
+- 🧪 Well-tested with comprehensive test coverage (61 tests)
 - 📦 Built with TypeScript, Vite, and Vitest
 - 🎯 Support for TypeScript and JavaScript (`.ts`, `.tsx`, `.js`, `.jsx`)
 
@@ -343,13 +343,21 @@ backpack-codemod/
 │   ├── transforms/                 # Transform implementations
 │   │   ├── bpk-button-v2.ts       # BpkButton V1 → V2
 │   │   ├── scss-use-migration.ts  # SCSS @import → @use
-│   │   └── bottom-sheet-padding.ts # BpkBottomSheet padding
+│   │   ├── bottom-sheet-padding.ts # BpkBottomSheet padding
+│   │   ├── price-marker-v2.ts     # BpkPriceMarker V2 → default
+│   │   ├── link-implicit.ts       # BpkLink implicit prop
+│   │   ├── badge-v2.ts            # BpkBadge V2 → default
+│   │   └── badge-types.ts         # Badge type renames
 │   ├── utils/                     # Helper utilities
 │   │   └── ast-helpers.ts
 │   ├── tests/                     # Test files
 │   │   ├── bpk-button-v2.test.ts
 │   │   ├── scss-use-migration.test.ts
-│   │   └── bottom-sheet-padding.test.ts
+│   │   ├── bottom-sheet-padding.test.ts
+│   │   ├── price-marker-v2.test.ts
+│   │   ├── link-implicit.test.ts
+│   │   ├── badge-v2.test.ts
+│   │   └── badge-types.test.ts
 │   ├── index.ts                   # Main exports
 │   └── cli.ts                     # CLI implementation
 ├── examples/                      # Example transformations
@@ -368,7 +376,7 @@ backpack-codemod/
 - **TypeScript** - Type-safe code
 - **SWC** - Fast JavaScript/TypeScript compiler for AST parsing
 - **Vite** - Fast build tool
-- **Vitest** - Fast unit testing (26 tests, all passing)
+- **Vitest** - Fast unit testing (61 tests, all passing)
 - **pnpm** - Fast, disk space efficient package manager
 
 ## Breaking Changes Addressed
@@ -388,6 +396,22 @@ This codemod addresses breaking changes from multiple Backpack releases:
 ### v39.0.0 (Oct 29, 2024)
 
 - **SCSS Migration**: Deprecated `@import` in favor of `@use`
+
+### v38.0.0 (Jul 16, 2025)
+
+- **BpkPriceMarker V2 Removal**: Consolidated into `BpkPriceMarker`
+
+### v37.0.0 (Apr 10, 2025)
+
+- **BpkLink Styling Change**: Old default now requires `implicit`
+
+### v32.0.0 (Feb 16, 2025)
+
+- **BpkBadge V2 Removal**: `BpkBadgeV2` consolidated into `BpkBadge`
+
+### v18.0.0 (Jan 31, 2024)
+
+- **Badge Type Renames**: `destructive` → `critical`, `light` → `normal`
 
 See [TRANSFORM_USE_CASES.md](./TRANSFORM_USE_CASES.md) for complete details.
 
