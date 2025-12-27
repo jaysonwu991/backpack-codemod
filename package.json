@@ -1,29 +1,39 @@
 {
   "name": "backpack-codemod",
   "version": "1.0.0",
-  "description": "Codemod for migrating Backpack breaking changes (v41.0.0)",
-  "type": "module",
-  "main": "./dist/index.js",
+  "description": "Codemod for migrating Backpack breaking changes (v18.0.0+)",
+  "keywords": [
+    "ast",
+    "backpack",
+    "codemod",
+    "migration",
+    "transform"
+  ],
+  "license": "MIT",
+  "author": "",
   "bin": {
     "backpack-codemod": "./dist/cli.js"
   },
+  "type": "module",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "vite build",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
     "dev": "vite build --watch",
-    "transform": "node dist/cli.js"
+    "transform": "node dist/cli.js",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "typecheck": "tsc --noEmit"
   },
-  "keywords": [
-    "codemod",
-    "backpack",
-    "migration",
-    "ast",
-    "transform"
-  ],
-  "author": "",
-  "license": "MIT",
+  "dependencies": {
+    "@swc/types": "^0.1.0",
+    "glob": "^11.0.0",
+    "yargs": "^17.7.2"
+  },
   "devDependencies": {
     "@swc/core": "^1.7.0",
     "@types/node": "^22.0.0",
@@ -34,10 +44,5 @@
     "vite": "^6.0.0",
     "vite-plugin-dts": "^4.3.0",
     "vitest": "^2.1.0"
-  },
-  "dependencies": {
-    "@swc/types": "^0.1.0",
-    "glob": "^11.0.0",
-    "yargs": "^17.7.2"
   }
 }

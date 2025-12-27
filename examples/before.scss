@@ -1,0 +1,11 @@
+@import "~@skyscanner/backpack-web/unstable__bpk-mixins";
+
+.card {
+  @include bpk-border-radius-md;
+  @include bpk-padding;
+  @include bpk-text;
+}
+
+.heading {
+  @include bpk-heading-2;
+}

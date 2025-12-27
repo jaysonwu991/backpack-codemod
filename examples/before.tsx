@@ -1,27 +1,48 @@
-import React from 'react';
-import { BpkText, BpkCard, BpkButtonV2 } from '@skyscanner/backpack-web';
+import React from "react";
+import {
+  BADGE_TYPES,
+  BpkBadgeV2,
+  BpkBottomSheet,
+  BpkButton,
+  BpkCard,
+  BpkLink,
+  BpkText,
+} from "@skyscanner/backpack-web";
+import { BpkPriceMarkerV2 } from "@skyscanner/backpack-web/bpk-component-price-marker-v2";
 
 interface Props {
   onSubmit: () => void;
   onCancel: () => void;
+  onDismiss: () => void;
 }
 
-export const MyComponent: React.FC<Props> = ({ onSubmit, onCancel }) => {
+export const MyComponent: React.FC<Props> = ({ onSubmit, onCancel, onDismiss }) => {
+  const urgencyBadge = BADGE_TYPES.destructive;
+
   return (
     <BpkCard>
       <BpkText>Welcome to Backpack!</BpkText>
+      <BpkText>
+        Read our <BpkLink href="/terms">terms</BpkLink> before continuing.
+      </BpkText>
       <div className="button-group">
-        <BpkButtonV2 onClick={onSubmit} type="primary">
+        <BpkButton onClick={onSubmit} type="primary">
           Submit
-        </BpkButtonV2>
-        <BpkButtonV2 onClick={onCancel} type="secondary">
+        </BpkButton>
+        <BpkButton onClick={onCancel} type="secondary">
           Cancel
-        </BpkButtonV2>
+        </BpkButton>
       </div>
+      <div className="status-group">
+        <BpkBadgeV2 type={urgencyBadge}>Disruption</BpkBadgeV2>
+        <BpkBadgeV2 type="light">Low fare</BpkBadgeV2>
+      </div>
+      <BpkPriceMarkerV2 price="$120" leadingTitle="NYC to LON" />
+      <BpkBottomSheet isOpen onClose={onDismiss} ariaLabel="Trip details">
+        <BpkText>Seats are limited for this route.</BpkText>
+      </BpkBottomSheet>
     </BpkCard>
   );
 };
 
-export const SimpleButton = () => (
-  <BpkButtonV2 onClick={() => console.log('clicked')} />
-);
+export const SimpleButton = () => <BpkButton onClick={() => console.log("clicked")} />;

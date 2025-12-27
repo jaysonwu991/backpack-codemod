@@ -1,5 +1,5 @@
-import { parseSync, transformSync, printSync } from '@swc/core';
-import type { Module, ImportDeclaration, ExportNamedDeclaration } from '@swc/types';
+import { parseSync, printSync } from "@swc/core";
+import type { Module, ImportDeclaration, ExportNamedDeclaration } from "@swc/types";
 
 export interface TransformResult {
   code: string;
@@ -8,8 +8,8 @@ export interface TransformResult {
 
 export function parseCode(code: string, filename: string): Module {
   return parseSync(code, {
-    syntax: filename.endsWith('.tsx') || filename.endsWith('.ts') ? 'typescript' : 'ecmascript',
-    tsx: filename.endsWith('.tsx'),
+    syntax: filename.endsWith(".tsx") || filename.endsWith(".ts") ? "typescript" : "ecmascript",
+    tsx: filename.endsWith(".tsx"),
     decorators: true,
   });
 }
@@ -23,7 +23,7 @@ export function isImportFromPackage(node: ImportDeclaration, packageName: string
 }
 
 export function isExportFromPackage(node: ExportNamedDeclaration, packageName: string): boolean {
-  if (node.type === 'ExportNamedDeclaration' && node.source) {
+  if (node.type === "ExportNamedDeclaration" && node.source) {
     return node.source.value === packageName;
   }
   return false;
@@ -33,20 +33,23 @@ export function hasImportSpecifier(node: ImportDeclaration, specifierName: strin
   if (!node.specifiers) return false;
 
   return node.specifiers.some((spec) => {
-    if (spec.type === 'ImportSpecifier') {
+    if (spec.type === "ImportSpecifier") {
       return spec.imported?.value === specifierName || spec.local.value === specifierName;
     }
     return false;
   });
 }
 
-export function removeImportSpecifier(node: ImportDeclaration, specifierName: string): ImportDeclaration {
+export function removeImportSpecifier(
+  node: ImportDeclaration,
+  specifierName: string,
+): ImportDeclaration {
   if (!node.specifiers) return node;
 
   return {
     ...node,
     specifiers: node.specifiers.filter((spec) => {
-      if (spec.type === 'ImportSpecifier') {
+      if (spec.type === "ImportSpecifier") {
         return spec.imported?.value !== specifierName && spec.local.value !== specifierName;
       }
       return true;
@@ -57,23 +60,25 @@ export function removeImportSpecifier(node: ImportDeclaration, specifierName: st
 export function addImportSpecifier(
   node: ImportDeclaration,
   specifierName: string,
-  alias?: string
+  alias?: string,
 ): ImportDeclaration {
   const newSpecifier = {
-    type: 'ImportSpecifier' as const,
+    type: "ImportSpecifier" as const,
     span: { start: 0, end: 0, ctxt: 0 },
     local: {
-      type: 'Identifier' as const,
+      type: "Identifier" as const,
       span: { start: 0, end: 0, ctxt: 0 },
       value: alias || specifierName,
       optional: false,
     },
-    imported: alias ? {
-      type: 'Identifier' as const,
-      span: { start: 0, end: 0, ctxt: 0 },
-      value: specifierName,
-      optional: false,
-    } : undefined,
+    imported: alias
+      ? {
+          type: "Identifier" as const,
+          span: { start: 0, end: 0, ctxt: 0 },
+          value: specifierName,
+          optional: false,
+        }
+      : undefined,
     isTypeOnly: false,
   };
 

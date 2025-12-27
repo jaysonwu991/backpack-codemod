@@ -1,12 +1,12 @@
-import { parseSync } from '@swc/core';
-
-export interface TransformResult {
-  code: string;
-  modified: boolean;
-}
-
-const BACKPACK_PACKAGE = 'backpack-react-native';
-const BACKPACK_WEB_PACKAGE = '@skyscanner/backpack-web';
+import { parseSync } from "@swc/core";
+import {
+  BACKPACK_PACKAGE,
+  BACKPACK_WEB_PACKAGE,
+  hasImport,
+  isJsLike,
+  isJsxLike,
+  type TransformResult,
+} from "../utils/transform-helpers.js";
 
 /**
  * Transform BpkLink to add implicit prop (Backpack v37.0.0)
@@ -18,48 +18,26 @@ const BACKPACK_WEB_PACKAGE = '@skyscanner/backpack-web';
 export function transformLinkImplicit(code: string, filename: string): TransformResult {
   try {
     // Only process TypeScript/JavaScript files with JSX
-    const isTypeScript = filename.endsWith('.ts') || filename.endsWith('.tsx');
-    const isJSX = filename.endsWith('.tsx') || filename.endsWith('.jsx');
+    const isTypeScript = filename.endsWith(".ts") || filename.endsWith(".tsx");
+    const isJSX = isJsxLike(filename);
 
-    if (!isJSX) {
+    if (!isJSX || !isJsLike(filename)) {
       return { code, modified: false };
     }
 
     // Parse to check if file has BpkLink
     const ast = parseSync(code, {
-      syntax: isTypeScript ? 'typescript' : 'ecmascript',
+      syntax: isTypeScript ? "typescript" : "ecmascript",
       tsx: isJSX,
       decorators: true,
     });
 
-    let hasBpkLink = false;
-
-    // Check imports for BpkLink
-    for (const node of ast.body) {
-      if (node.type === 'ImportDeclaration') {
-        const isBackpackImport =
-          node.source.value === BACKPACK_PACKAGE ||
-          node.source.value === BACKPACK_WEB_PACKAGE ||
-          node.source.value.includes('bpk-component-link');
-
-        if (isBackpackImport && node.specifiers) {
-          for (const spec of node.specifiers) {
-            if (spec.type === 'ImportSpecifier' || spec.type === 'ImportDefaultSpecifier') {
-              const importedName = spec.type === 'ImportSpecifier'
-                ? (spec.imported?.value || spec.local.value)
-                : spec.local.value;
-              if (importedName === 'BpkLink') {
-                hasBpkLink = true;
-                break;
-              }
-            }
-          }
-        }
-      }
-      if (hasBpkLink) break;
-    }
-
-    if (!hasBpkLink) {
+    if (
+      !hasImport(ast, "BpkLink", [BACKPACK_PACKAGE, BACKPACK_WEB_PACKAGE, "bpk-component-link"], {
+        includeDefault: true,
+        matchSubpath: true,
+      })
+    ) {
       return { code, modified: false };
     }
 

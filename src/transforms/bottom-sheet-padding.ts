@@ -1,12 +1,12 @@
-import { parseSync } from '@swc/core';
-
-export interface TransformResult {
-  code: string;
-  modified: boolean;
-}
-
-const BACKPACK_PACKAGE = 'backpack-react-native';
-const BACKPACK_WEB_PACKAGE = '@skyscanner/backpack-web';
+import { parseSync } from "@swc/core";
+import {
+  BACKPACK_PACKAGE,
+  BACKPACK_WEB_PACKAGE,
+  hasImport,
+  isJsLike,
+  isJsxLike,
+  type TransformResult,
+} from "../utils/transform-helpers.js";
 
 /**
  * Transform BpkBottomSheet padding (Backpack v40.0.0)
@@ -18,52 +18,32 @@ const BACKPACK_WEB_PACKAGE = '@skyscanner/backpack-web';
 export function transformBottomSheetPadding(code: string, filename: string): TransformResult {
   try {
     // Only process TypeScript/JavaScript files
-    const isTypeScript = filename.endsWith('.ts') || filename.endsWith('.tsx');
-    const isJSX = filename.endsWith('.tsx') || filename.endsWith('.jsx');
+    const isTypeScript = filename.endsWith(".ts") || filename.endsWith(".tsx");
+    const isJSX = isJsxLike(filename);
 
-    if (!isJSX && !filename.endsWith('.js')) {
+    if (!isJSX || !isJsLike(filename)) {
       return { code, modified: false };
     }
 
     // Parse to check if file has BpkBottomSheet
     const ast = parseSync(code, {
-      syntax: isTypeScript ? 'typescript' : 'ecmascript',
+      syntax: isTypeScript ? "typescript" : "ecmascript",
       tsx: isJSX,
       decorators: true,
     });
 
-    let hasBpkBottomSheet = false;
-
-    // Check imports for BpkBottomSheet
-    for (const node of ast.body) {
-      if (node.type === 'ImportDeclaration') {
-        const isBackpackImport =
-          node.source.value === BACKPACK_PACKAGE ||
-          node.source.value === BACKPACK_WEB_PACKAGE ||
-          node.source.value === '@skyscanner/backpack-web/bpk-component-bottom-sheet';
-
-        if (isBackpackImport && node.specifiers) {
-          for (const spec of node.specifiers) {
-            // Check named imports
-            if (spec.type === 'ImportSpecifier') {
-              const importedName = spec.imported?.value || spec.local.value;
-              if (importedName === 'BpkBottomSheet') {
-                hasBpkBottomSheet = true;
-                break;
-              }
-            }
-            // Check default imports (e.g., import BpkBottomSheet from '...')
-            if (spec.type === 'ImportDefaultSpecifier' && spec.local.value === 'BpkBottomSheet') {
-              hasBpkBottomSheet = true;
-              break;
-            }
-          }
-        }
-      }
-      if (hasBpkBottomSheet) break;
-    }
-
-    if (!hasBpkBottomSheet) {
+    if (
+      !hasImport(
+        ast,
+        "BpkBottomSheet",
+        [
+          BACKPACK_PACKAGE,
+          BACKPACK_WEB_PACKAGE,
+          "@skyscanner/backpack-web/bpk-component-bottom-sheet",
+        ],
+        { includeDefault: true },
+      )
+    ) {
       return { code, modified: false };
     }
 
@@ -74,21 +54,24 @@ export function transformBottomSheetPadding(code: string, filename: string): Tra
     // Handle both with props and without props
     const bottomSheetPattern = /<BpkBottomSheet(\s+([^>]*?))?>/g;
 
-    transformedCode = transformedCode.replace(bottomSheetPattern, (match, _whitespaceAndProps, props) => {
-      // Skip if paddingType already exists
-      if (props && /paddingType\s*=/.test(props)) {
-        return match;
-      }
+    transformedCode = transformedCode.replace(
+      bottomSheetPattern,
+      (match, _whitespaceAndProps, props) => {
+        // Skip if paddingType already exists
+        if (props && /paddingType\s*=/.test(props)) {
+          return match;
+        }
 
-      modified = true;
+        modified = true;
 
-      // Add paddingType="compact" to maintain old behavior
-      if (props && props.trim()) {
-        return `<BpkBottomSheet ${props.trim()} paddingType="compact">`;
-      } else {
-        return `<BpkBottomSheet paddingType="compact">`;
-      }
-    });
+        // Add paddingType="compact" to maintain old behavior
+        if (props && props.trim()) {
+          return `<BpkBottomSheet ${props.trim()} paddingType="compact">`;
+        } else {
+          return `<BpkBottomSheet paddingType="compact">`;
+        }
+      },
+    );
 
     return {
       code: transformedCode,

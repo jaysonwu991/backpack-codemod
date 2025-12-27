@@ -1,9 +1,4 @@
-import { parseSync } from '@swc/core';
-
-export interface TransformResult {
-  code: string;
-  modified: boolean;
-}
+import { isJsLike, type TransformResult } from "../utils/transform-helpers.js";
 
 /**
  * Transform Badge types rename (Backpack v18.0.0)
@@ -13,8 +8,7 @@ export interface TransformResult {
  */
 export function transformBadgeTypes(code: string, filename: string): TransformResult {
   // Only process TypeScript/JavaScript files
-  if (!filename.endsWith('.ts') && !filename.endsWith('.tsx') &&
-      !filename.endsWith('.js') && !filename.endsWith('.jsx')) {
+  if (!isJsLike(filename)) {
     return { code, modified: false };
   }
 
@@ -22,7 +16,8 @@ export function transformBadgeTypes(code: string, filename: string): TransformRe
   let modified = false;
 
   // Check if file has anything to transform
-  const hasRelevantContent = transformedCode.includes('BADGE_TYPES') ||
+  const hasRelevantContent =
+    transformedCode.includes("BADGE_TYPES") ||
     transformedCode.includes('type="destructive"') ||
     transformedCode.includes("type='destructive'") ||
     transformedCode.includes('type="light"') ||
@@ -33,15 +28,15 @@ export function transformBadgeTypes(code: string, filename: string): TransformRe
   }
 
   // 1. Replace BADGE_TYPES.destructive with BADGE_TYPES.critical
-  if (transformedCode.includes('BADGE_TYPES.destructive')) {
+  if (transformedCode.includes("BADGE_TYPES.destructive")) {
     modified = true;
-    transformedCode = transformedCode.replace(/BADGE_TYPES\.destructive/g, 'BADGE_TYPES.critical');
+    transformedCode = transformedCode.replace(/BADGE_TYPES\.destructive/g, "BADGE_TYPES.critical");
   }
 
   // 2. Replace BADGE_TYPES.light with BADGE_TYPES.normal
-  if (transformedCode.includes('BADGE_TYPES.light')) {
+  if (transformedCode.includes("BADGE_TYPES.light")) {
     modified = true;
-    transformedCode = transformedCode.replace(/BADGE_TYPES\.light/g, 'BADGE_TYPES.normal');
+    transformedCode = transformedCode.replace(/BADGE_TYPES\.light/g, "BADGE_TYPES.normal");
   }
 
   // 3. Replace string literal values in type prop
